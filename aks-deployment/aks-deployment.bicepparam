@@ -1,0 +1,12 @@
+using 'main.bicep'
+
+param location = 'eastus'
+param nsgName = 'nsg-aks-prod-eastus-001'
+param vnetName = 'vnet-aks-prod-eastus-001'
+param addressSpace = '10.201.0.0/16'
+param systemPoolSubnetName = 'snet-aks-prod-eastus-systempool1'
+param userPool1SubnetName = 'snet-aks-prod-eastus-userpool1'
+param userPool2SubnetName = 'snet-aks-prod-eastus-userpool2'
+param uaidName = 'mi-aks-prod-eastus-001'
+param privateDnsZoneName = 'private.eastus.azmk8s.io'
+param aksName = 'aks-aks-prod-eastus-001'
