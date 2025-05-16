@@ -1,7 +1,7 @@
 
 # Login with device code authentication
 # This is useful for environments where interactive login isn't available
-az login --use-device-code
+# az login --use-device-code
 
 # Set the base name for your resource group
 rg_name=aks-rg
