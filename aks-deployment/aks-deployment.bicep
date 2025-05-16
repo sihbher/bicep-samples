@@ -1,5 +1,16 @@
 param location string
 param nsgName string
+param uaidName string
+
+module userAssignedIdentity 'br/public:avm/res/managed-identity/user-assigned-identity:0.4.0' = {
+  name: 'userAssignedIdentityDeployment'
+  params: {
+    // Required parameters
+    name: uaidName
+    // Non-required parameters
+    location: location
+  }
+}
 
 //create network security group
 module networkSecurityGroup 'br/public:avm/res/network/network-security-group:0.5.0' = {
@@ -116,19 +127,12 @@ module virtualNetwork 'br/public:avm/res/network/virtual-network:0.5.2' = {
       }
   ]
   }
+  dependsOn: [
+    userAssignedIdentity // Add explicit dependency for avoiding errors
+  ]
 }
 
-param uaidName string
 
-module userAssignedIdentity 'br/public:avm/res/managed-identity/user-assigned-identity:0.4.0' = {
-  name: 'userAssignedIdentityDeployment'
-  params: {
-    // Required parameters
-    name: uaidName
-    // Non-required parameters
-    location: location
-  }
-}
 
 param privateDnsZoneName string
 
