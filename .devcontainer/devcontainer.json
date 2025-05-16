@@ -13,10 +13,6 @@
     },
     "ghcr.io/devcontainers/features/powershell:1": {
       "version": "latest"
-    },
-    //bicep
-    "ghcr.io/devcontainers/features/bicep:1": {
-      "version": "latest"
     }
   }
 }

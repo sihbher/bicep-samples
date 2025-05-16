@@ -132,11 +132,27 @@ module userAssignedIdentity 'br/public:avm/res/managed-identity/user-assigned-id
 
 param privateDnsZoneName string
 
+//It should be a valid resource id and the private dns zone name should be in either of these formats: 'private.eastus2.azmk8s.io,privatelink.eastus2.azmk8s.io,[a-zA-Z0-9-]{1,32}.private.eastus2.azmk8s.io,[a-zA-Z0-9-]{1,32}.privatelink.eastus2.azmk8s.io'
+//check and replace if location does not matches exactly with the private dns zone name
+//for example if location is 'eastus2' and private dns zone name is 'private.eastus.azmk8s.io' then it will be replaced with 'private.eastus2.azmk8s.io'
+//if location is 'eastus2' and private dns zone name is 'privatelink.eastus.azmk8s.io' then it will be replaced with 'privatelink.eastus2.azmk8s.io'
+var locationNormalized = replace(toLower(location), ' ', '')
+// Simple check for the two standard patterns
+var isPrivateZone = startsWith(privateDnsZoneName, 'private.')
+var isPrivateLinkZone = startsWith(privateDnsZoneName, 'privatelink.')
+
+// Get correct DNS zone name based on the pattern
+var finalPrivateDnsZoneName = isPrivateZone 
+                              ? 'private.${locationNormalized}.azmk8s.io' 
+                              : (isPrivateLinkZone 
+                                ? 'privatelink.${locationNormalized}.azmk8s.io'
+                                : privateDnsZoneName)
+
 module privateDnsZone 'br/public:avm/res/network/private-dns-zone:0.7.0' = {
   name: 'privateDnsZoneDeployment'
   params: {
     // Required parameters
-    name: privateDnsZoneName
+    name: finalPrivateDnsZoneName
     // Non-required parameters
     location: 'global'
     roleAssignments: [
